@@ -8,6 +8,9 @@ Made by Gatum Erlangga for starting a simple ExpressJS application with Prisma a
 #### Install all package
 `npm install`
 
+#### Run app with hot reload
+`npm run dev`
+
 
 #### Prisma's life using MySQL
 Tutorial: Get started with prisma using mysql https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-node-mysql
