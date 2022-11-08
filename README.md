@@ -17,6 +17,10 @@ Tutorial: Get started with prisma using mysql https://www.prisma.io/docs/getting
 4. Run `npx prisma generate` to generate model based on the fixed scheme from database
 5. Repeat if there is any changes on the main database server. https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases/next-steps-typescript-postgres
 
+#### Todo
+1. Rest API user
+2. REST API user's post
+
 #### Prisma References
 1. Model https://www.prisma.io/docs/concepts/components/prisma-schema/data-model
 2. Model scheme is located on `prisma/schema.prisma` file
