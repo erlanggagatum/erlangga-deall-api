@@ -7,7 +7,7 @@ var router = express.Router();
 const jwt = require('jsonwebtoken')
 
 // Init prisma client for ORM
-const { PrismaClient } = require('@prisma/client')
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
 
 let validRefreshTokens = []
@@ -32,37 +32,54 @@ router.post('/login', async (req, res) => {
   })
   
   if (!login) {
-    res.status(403).json({error: "Credential doesn't match with our records!"})
+    res.status(500).json({
+      success: false,
+      message: "Credential doesn't match with our records!"
+    })
+  } else {
+
+    console.log(login)
+    // if user available, generate jwt with 1h of expiration
+    const accessToken = generateAccessToken(login)
+    const refreshToken = generateRefreshToken(login)
+  
+    validRefreshTokens.push(refreshToken)
+  
+    console.log(validRefreshTokens)
+  
+    // return http 200 success
+    res.status(200).json({
+      success: true,
+      message: "Login success!",
+      data: {
+        userReq: user,
+        accessToken: accessToken, 
+        refreshToken: refreshToken
+      }
+    })
   }
-  console.log(login)
-  // if user available, generate jwt with 1h of expiration
-  const accessToken = generateAccessToken(login)
-  const refreshToken = generateRefreshToken(login)
 
-  validRefreshTokens.push(refreshToken)
-
-  console.log(validRefreshTokens)
-
-  // return http 200 success
-  res.status(200).json({
-    status: "OK",
-    data: {
-      userReq: user,
-      accessToken: accessToken, 
-      refreshToken: refreshToken
-    }
-  })
 })
 
 // REFRESH TOKEN
 router.post('/refresh-token', (req, res) => {
   const token = req.body.token
 
-  if(!token) return res.status(403).json({error: "Unauthorize! No refresh token given"})
+  if(!token) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorize! No refresh token given"
+    })
+  } 
 
   // find if there is any valid token
   const tokenFound = validRefreshTokens.find(vt => vt == token)
-  if(!tokenFound) return res.status(403).json({error: "Unauthorize! Refresh token is not valid"})
+  if(!tokenFound) {
+    res.status(401).json({
+      success: false,
+      message: "Unauthorize! Refresh token is not valid"
+    })
+  }
 
   // if token available, generate new access token for user
   // first, decode the token
@@ -73,21 +90,20 @@ router.post('/refresh-token', (req, res) => {
     id: payload.id,
     name: payload.name,
     email: payload.email,
-    password: payload.password
+    password: payload.password,
+    role: payload.role,
   }
 
   const newAccessToken = generateAccessToken(authorize)
 
   res.status(200).json({
-    status: "OK",
+    success: true,
+    message: "Access token has been generated!",
     data: {
       accessToken: newAccessToken,
       payload: authorize
     }
   })
-
-
-
 })
 
 function generateAccessToken(payload) {
@@ -98,6 +114,23 @@ function generateRefreshToken(payload) {
 }
 
 // LOGOUT
+router.post('/logout', (req, res) => {
+  const token = req.body.token
 
+  if (!token) return res.redirect('/')
+
+  validRefreshTokens = validRefreshTokens.filter((val) => {
+    return val !== token
+  })
+
+  console.log(token)
+  console.log(validRefreshTokens)
+
+  res.status(200).json({
+    success: true,
+    message: "Logout has successfully performed!"
+  })
+
+})
 
 module.exports = router;

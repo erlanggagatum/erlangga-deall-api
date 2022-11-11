@@ -35,33 +35,4 @@ router.delete('/', function(req, res, next) {
   res.send('Got a DELETE request')
 })
 
-router.post('/login', async (req, res) => {
-  // get user
-  const user = req.body
-
-  // authenticate user
-  const login = await prisma.user.findFirst({
-    where: {
-      AND : [
-        {
-          email: user.email,
-        },
-        {
-          password: user.password,
-        }
-      ]
-    }
-  })
-  
-  if (!login) {
-    res.status(403).json({error: "Credential doesn't match with our records!"})
-  }
-  console.log(login)
-  // if user available, generate jwt with 1h of expiration
-  const accessToken = jwt.sign(login, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "30s"})
-
-  res.status(200).json({userReq: user, login: login, accessToken: accessToken})
-  
-})
-
 module.exports = router;
