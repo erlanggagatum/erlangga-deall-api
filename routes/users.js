@@ -165,10 +165,4 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 })
 
-function adminCheck(req, res) {
-  if (req.user.role !== "admin") {
-    return res.status(401).json({success: false, message: "User unauthorized!", data: {}})
-  } 
-}
-
 module.exports = router;
