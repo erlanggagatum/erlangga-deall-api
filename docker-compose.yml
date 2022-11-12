@@ -1,0 +1,38 @@
+# NETWORK
+# 192.168.10.0/24
+# 192.168.10.1/24  -> server
+# 192.168.10.10/24 -> DB:mysql
+
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql-deall
+    restart: always
+    networks:
+      network-deall:
+        ipv4_address: 192.168.10.10
+    volumes:
+      - ./.data/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mysql-deall
+
+  node:
+    build: .
+    container_name: node-server-deall
+    depends_on:
+      - db
+    networks:
+      network-deall:
+        ipv4_address: 192.168.10.20
+    ports: 
+      - 3030:3000
+    
+# Internal network configuration
+networks:
+  network-deall:
+    ipam:
+      driver: default # using bridge
+      config: 
+        - subnet: 192.168.10.0/24

@@ -1,0 +1,15 @@
+# Ignore docker configuration file
+Dockerfile
+.dockerignore
+docker.compose.yml
+
+# Node module and package-lock.json
+./node_modules
+package-lock.json
+
+# ENV
+.env
+.env.example
+
+# README
+*.md
