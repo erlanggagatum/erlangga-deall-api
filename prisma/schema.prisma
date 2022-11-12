@@ -13,20 +13,8 @@ model User {
   email    String     @db.VarChar(49)
   password String     @db.VarChar(49)
   role     users_role @default(user)
-  posts    Post[]     @relation("postsTousers")
 
   @@map("users")
-}
-
-model Post {
-  id      Int     @id @default(autoincrement())
-  title   String  @db.VarChar(100)
-  content String? @db.Text
-  userId  Int     @map("user_id")
-  users   User    @relation("postsTousers", fields: [userId], references: [id], onUpdate: Restrict, map: "user_id")
-
-  @@index([userId], map: "user_id")
-  @@map("posts")
 }
 
 enum users_role {

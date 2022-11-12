@@ -13,11 +13,13 @@ RUN echo "DATABASE_URL=\"mysql://root:root@192.168.10.10:3306/mysql-deall\"" > .
 RUN echo "ACCESS_TOKEN_SECRET=\"983e1b682294e04839f1b3373da50b3f6c220a62647b7ab8d29bc049f09a51d9dedaf8aa0f961d4dc39e762b9535d3d4f422547da883fcac45bebf4b50e76337\"" >> .env
 RUN echo "REFRESH_TOKEN_SECRET=\"0e6b45aa185d13a7fc5de388f7b65ff704b1a343f14da0143a7f4a610ff51839d86596a93f0369663b3aa8b029c8dfff581f3069c2624775a82b41c7fdbe0f95\"" >> .env
 
+RUN echo "sleep 30" > run.sh
 # RUN PRISMA CONFIGURATION
 # RUN npx prisma db push
 # RUN npx prisma generate
-RUN echo "npx prisma db push" > run.sh
+RUN echo "npx prisma db push" >> run.sh
 RUN echo "npx prisma generate" >> run.sh
+RUN echo "node ./database/seed" >> run.sh 
 
 # START SERVER
 # CMD RUN npx prisma db push; RUN npx prisma generate; npm run start
