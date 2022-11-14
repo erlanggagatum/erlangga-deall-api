@@ -14,7 +14,7 @@ module.exports = function authorizeUser(req, res, next) {
   }
 
   jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.status(403).json({message: 'Unauthorized! Token is expired!'})
+    if (err) return res.status(401).json({message: 'Unauthorized! Token is expired!'})
     req.user = user
     console.log(user)
     next()

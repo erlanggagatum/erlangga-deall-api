@@ -1,0 +1,6 @@
+version: '3'
+services:
+  node:
+    build:
+      dockerfile: Dockerfile-prod
+    container_name: node-server-deall

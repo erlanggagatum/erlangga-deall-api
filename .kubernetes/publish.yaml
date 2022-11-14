@@ -1,0 +1,79 @@
+# CREATE MYSQL POD USING REPLICATION SERVICE
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: express-rs-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      database: express-db
+  template:
+    metadata:
+      name: express-db
+      labels:
+        database: express-db
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:latest
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: mysql-deall
+---
+
+# CREATE POD USING REPLICATION SERVICE
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: express-rs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: express
+  template:
+    metadata:
+      name: express
+      labels:
+        name: express
+        database: express-db
+    spec:
+      containers:
+        - name: express
+          image: erlanggagatum/erlangga-deall-api:latest
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: express-mysql-database
+spec:
+  # ClusterIP untuk local cluster
+  type: ClusterIP
+  selector:
+    database: express-db
+  ports:
+    - port: 3306
+      targetPort: 3306
+      
+--- 
+# CREATE NodePort Service to publish and expose app
+apiVersion: v1
+kind: Service
+metadata:
+  name: express-external-service
+spec:
+  # ClusterIP untuk local cluster
+  type: NodePort
+  selector:
+    name: express
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30003
