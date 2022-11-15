@@ -42,6 +42,19 @@ OR
 ```
 npm run dev
 ```
+
+## Admin Credentials
+```
+Application
+Email: admin@admin.com
+Password: 123
+
+Database
+Username: root
+Password: root
+```
+
+
 ## Architecture Design
 ### API Architecture Design _(with refresh token)_
 ![API Architecture](https://drive.google.com/uc?export=view&id=1hKC66GAIbR1NVyS6jDb-J7iOfBAoVauA)
@@ -60,7 +73,7 @@ npm run dev
 Standart
 ```json
 {
-    "success": "Boolean", // true | false
+    "success": "Boolean",
     "Message": "String",
     "error": "String",
     "data": "Object"
@@ -158,14 +171,22 @@ _Header is required! Access Token is given when after login or refresh token if 
 
 Body: ```Raw``` for postman
 
+| Parameter  | Type     | Description                   |
+| :--------  | :------- | :---------------------------- |
+| `user`    | `object` or `array` of `object` | **Required**. User object   |
+| `name` | `string` | **Required**. User's name |
+| `email` | `string` | **Required**. User's email |
+| `password` | `string` | **Required**. User's password |
+| `role` | `string` | **Optional**. User's role (ONLY `user` or `admin`) |
+
 Insert single user
 ```json
 {
     "user": {
-        "name": "User's name", // string
-        "email": "User's name", // string
-        "password": "User's name", // string
-        "role": "user", // string | optional | ONLY "user" or "admin"
+        "name": "User's name", 
+        "email": "User's name", 
+        "password": "User's name", 
+        "role": "user", 
     }
 }
 ```
@@ -175,16 +196,16 @@ Insert multiple user at once
 {
     "user": [
         {
-            "name": "1 User's name", // string
-            "email": "user1@mail.com", // string
-            "password": "user1pass", // string
-            "role": "user", // string | optional | ONLY "user" or "admin"
+            "name": "1 User's name", 
+            "email": "user1@mail.com", 
+            "password": "user1pass", 
+            "role": "user", 
         },
         {
-            "name": "2 User's name", // string
-            "email": "user2@mail.com", // string
-            "password": "user2pass", // string
-            "role": "user", // string | optional | ONLY "user" or "admin"
+            "name": "2 User's name", 
+            "email": "user2@mail.com", 
+            "password": "user2pass",
+            "role": "user",
         }
     ]
 }
@@ -202,13 +223,20 @@ _Header is required! Access Token is given when after login or refresh token if 
 
 Body: ```Raw``` for postman
 
+| Parameter  | Type     | Description                   |
+| :--------  | :------- | :---------------------------- |
+| `name` | `string` | **Optional**. User's name |
+| `email` | `string` | **Optional**. User's email |
+| `password` | `string` | **Optional**. User's password |
+| `role` | `string` | **Optional**. User's role (ONLY `user` or `admin`) |
+
 ```json
 Note: every field is optional.
 {
-    "name": "User's name", // string
-    "email": "User's name", // string
-    "password": "User's name", // string
-    "role": "user", // string | ONLY "user" or "admin"
+    "name": "User's name",
+    "email": "User's name",
+    "password": "User's name",
+    "role": "user",
 }
 ```
 
@@ -228,7 +256,7 @@ _Header is required! Access Token is given when after login or refresh token if 
 
 ## Deployment
 
-### Using Docker Compose
+### Using Docker Compose _(the safer way)_
 
 ```bash
   docker compose up -d
