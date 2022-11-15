@@ -231,7 +231,6 @@ Body: ```Raw``` for postman
 | `role` | `string` | **Optional**. User's role (ONLY `user` or `admin`) |
 
 ```json
-Note: every field is optional.
 {
     "name": "User's name",
     "email": "User's name",
