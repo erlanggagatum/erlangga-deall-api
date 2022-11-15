@@ -58,17 +58,17 @@ npm run dev
 ### JSON Response Standart
 
 Standart
-```
+```json
 {
-    "success": true | false,
-    "Message": String,
-    "error": String,
-    "data": Object
+    "success": "Boolean", // true | false
+    "Message": "String",
+    "error": "String",
+    "data": "Object"
 }
 ```
 
 JSON Response Example
-```
+```json
 {
     "success": true,
     "message": "The data has been updated!",
@@ -159,7 +159,7 @@ _Header is required! Access Token is given when after login or refresh token if 
 Body: ```Raw``` for postman
 
 Insert single user
-``` json
+```json
 {
     "user": {
         "name": "User's name", // string
@@ -171,7 +171,7 @@ Insert single user
 ```
 
 Insert multiple user at once
-``` json
+```json
 {
     "user": [
         {
