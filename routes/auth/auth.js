@@ -17,46 +17,57 @@ router.post('/login', async (req, res) => {
   // get user
   const user = req.body
 
-  // authenticate user
-  const login = await prisma.user.findFirst({
-    where: {
-      AND : [
-        {
-          email: user.email,
-        },
-        {
-          password: user.password,
-        }
-      ]
-    }
-  })
-  
-  if (!login) {
-    res.status(500).json({
-      success: false,
-      message: "Credential doesn't match with our records!"
-    })
-  } else {
-
-    console.log(login)
-    // if user available, generate jwt with 1h of expiration
-    const accessToken = generateAccessToken(login)
-    const refreshToken = generateRefreshToken(login)
-  
-    validRefreshTokens.push(refreshToken)
-  
-    console.log(validRefreshTokens)
-  
-    // return http 200 success
-    res.status(200).json({
-      success: true,
-      message: "Login success!",
-      data: {
-        userReq: user,
-        accessToken: accessToken, 
-        refreshToken: refreshToken
+  try {
+    // authenticate user
+    const login = await prisma.user.findFirst({
+      where: {
+        AND : [
+          {
+            email: user.email,
+          },
+          {
+            password: user.password,
+          }
+        ]
       }
     })
+    
+    if (!login) {
+      return res.status(500).json({
+        success: false,
+        message: "Credential doesn't match with our records!"
+      })
+    } else {
+
+      console.log(login)
+      // if user available, generate jwt with 1h of expiration
+      const accessToken = generateAccessToken(login)
+      const refreshToken = generateRefreshToken(login)
+    
+      validRefreshTokens.push(refreshToken)
+    
+      console.log(validRefreshTokens)
+    
+      // return http 200 success
+      res.status(200).json({
+        success: true,
+        message: "Login success!",
+        data: {
+          userReq: user,
+          accessToken: accessToken, 
+          refreshToken: refreshToken
+        }
+      })
+    }
+
+  } catch (error) {
+    
+    return res.status(500).json({
+      success: false, 
+      message: "There is an error when retrieving your data!",
+      error: error,
+      data: {}
+    });
   }
 
 })
@@ -75,7 +86,7 @@ router.post('/refresh-token', (req, res) => {
   // find if there is any valid token
   const tokenFound = validRefreshTokens.find(vt => vt == token)
   if(!tokenFound) {
-    res.status(401).json({
+    return res.status(401).json({
       success: false,
       message: "Unauthorize! Refresh token is not valid"
     })
@@ -96,7 +107,7 @@ router.post('/refresh-token', (req, res) => {
 
   const newAccessToken = generateAccessToken(authorize)
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     message: "Access token has been generated!",
     data: {

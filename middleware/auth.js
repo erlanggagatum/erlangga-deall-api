@@ -10,7 +10,7 @@ module.exports = function authorizeUser(req, res, next) {
   // check if access token is given with Bearer token format
   const accessToken = header && header.split(" ")[1] //Bearer token
   if (!accessToken) {
-    res.status(401).json({message: 'Unauthorized! No access token given!'})
+    return res.status(401).json({message: 'Unauthorized! No access token given!'})
   }
 
   jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {

@@ -1,30 +1,48 @@
 # CREATE MYSQL POD USING REPLICATION SERVICE
 # apiVersion: apps/v1
-apiVersion: apps/v1
-kind: Deployment
+# kind: ReplicaSet
+# metadata:
+#   name: express-rs-db
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       database: express-db
+#   template:
+#     metadata:
+#       name: express-db
+#       labels:
+#         database: express-db
+#     spec:
+#       containers:
+#         - name: mysql
+#           image: mysql:latest
+#           ports:
+#             - containerPort: 3306
+#           env:
+#             - name: MYSQL_ROOT_PASSWORD
+#               value: root
+#             - name: MYSQL_DATABASE
+#               value: mysql-deall
+
+apiVersion: v1
+kind: Pod
 metadata:
   name: express-db
+  labels:
+    database: express-db
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      database: express-db
-  template:
-    metadata:
-      labels:
-        database: express-db
-    spec:
-      containers:
-        - name: mysql
-          # image: mysql:8.0
-          image: mariadb:latest
-          ports:
-            - containerPort: 3306      
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: root
-            - name: MYSQL_DATABASE
-              value: mysql-deall
+  containers:
+    - name: mysql
+      # image: mysql:8.0
+      image: mariadb:latest
+      ports:
+        - containerPort: 3306      
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: mysql-deall
 
 ---
 

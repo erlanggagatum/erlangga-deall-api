@@ -20,6 +20,7 @@ RUN echo "sleep 100" > run.sh
 # RUN npx prisma generate
 RUN echo "npx prisma db push" >> run.sh
 RUN echo "npx prisma generate" >> run.sh
+RUN echo "sleep 30" > run.sh
 RUN echo "node ./database/seed" >> run.sh 
 
 # START SERVER

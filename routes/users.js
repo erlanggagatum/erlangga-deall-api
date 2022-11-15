@@ -14,15 +14,24 @@ const prisma = new PrismaClient()
 /* GET users listing. */
 router.get('/', authMiddleware, async (req, res) => {
 
-    const users = await prisma.user.findMany()
-  
-    res.status(200).json({
-      success: true, 
-      message: "Data has been retrieved succesfully!",
-      data: {
-        users: users
-      }
-    });
+    try {
+      const users = await prisma.user.findMany()
+    
+      res.status(200).json({
+        success: true, 
+        message: "Data has been retrieved succesfully!",
+        data: {
+          users: users
+        }
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false, 
+        message: "There is an error when retrieving your data!",
+        error: error,
+        data: {}
+      });
+    }
 });
 
 
@@ -44,7 +53,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false, 
       message: "There is an error when retrieving your data!",
       error: error,
@@ -88,7 +97,7 @@ router.post("/", authMiddleware, async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "There is an error when creating your data!",
       error: error,
@@ -125,7 +134,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     })
 
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "There is an error when updating your data!",
       error: error,
@@ -155,7 +164,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
       }
     })
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "There is an error when deleting your data!",
       error: error,
