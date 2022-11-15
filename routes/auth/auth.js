@@ -129,13 +129,17 @@ router.post('/logout', (req, res) => {
   const token = req.body.token
 
   if (!token) return res.redirect('/')
-
+  
+  const lenBefore = validRefreshTokens.length
   validRefreshTokens = validRefreshTokens.filter((val) => {
     return val !== token
   })
+  const lenAfter = validRefreshTokens.length
 
   console.log(token)
   console.log(validRefreshTokens)
+  
+  if (lenBefore == lenAfter) return res.redirect('/')
 
   res.status(200).json({
     success: true,

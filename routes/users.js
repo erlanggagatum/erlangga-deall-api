@@ -14,29 +14,38 @@ const prisma = new PrismaClient()
 /* GET users listing. */
 router.get('/', authMiddleware, async (req, res) => {
 
-    try {
-      const users = await prisma.user.findMany()
-    
-      res.status(200).json({
-        success: true, 
-        message: "Data has been retrieved succesfully!",
-        data: {
-          users: users
-        }
-      });
-    } catch (error) {
-      return res.status(500).json({
-        success: false, 
-        message: "There is an error when retrieving your data!",
-        error: error,
-        data: {}
-      });
-    }
+  // return res.status(200).json(req.user);
+  if (req.user.role !== 'admin') return res.redirect(`${req.user.id}`)
+
+  try {
+    const users = await prisma.user.findMany()
+  
+    res.status(200).json({
+      success: true, 
+      message: "Data has been retrieved succesfully!",
+      data: {
+        users: users
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false, 
+      message: "There is an error when retrieving your data!",
+      error: error,
+      data: {}
+    });
+  }
 });
 
 
 /* GET users listing. */
 router.get('/:id', authMiddleware, async (req, res) => {
+
+  // console.log(`${req.params.id} ${req.user.id.toString()} `+ (req.params.id == req.user.id.toString()))
+  
+  // user role only can access user's information
+  if (req.user.role !== 'admin' && req.params.id !== req.user.id.toString()) return res.redirect(`${req.user.id}`)
+  
   // get user by ID
   try {
     const user = await prisma.user.findFirstOrThrow({
