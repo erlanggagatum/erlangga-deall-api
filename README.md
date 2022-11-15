@@ -42,6 +42,7 @@ OR
 ```
 npm run dev
 ```
+The app will running on port 3000. Example ```localhost:3000```
 
 ## Admin Credentials
 ```
