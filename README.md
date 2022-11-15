@@ -92,7 +92,7 @@ JSON Response Example
 
 #### Login to application
 
-```http
+```
   POST /auth/login
 ```
 Body: (use ```x-www-form-urlencoded``` or ```raw``` for postman)
@@ -103,7 +103,7 @@ Body: (use ```x-www-form-urlencoded``` or ```raw``` for postman)
 
 
 #### Get refresh token
-```http
+```
   POST /auth/refresh-token
 ```
 Body: (use ```x-www-form-urlencoded``` or ```raw``` for postman)
@@ -114,7 +114,7 @@ Body: (use ```x-www-form-urlencoded``` or ```raw``` for postman)
 
 #### Logout
 
-```http
+```
   POST /auth/logout
 ```
 Body: (use ```x-www-form-urlencoded``` or ```raw``` for postman)
@@ -129,7 +129,7 @@ Body: (use ```x-www-form-urlencoded``` or ```raw``` for postman)
 
 #### Retrieve all users
 
-```http
+```
   GET /users
 ```
 ```Authenticaction Header```: Bearer accessToken 
@@ -139,7 +139,7 @@ _Header is required! Access Token is given when after login or refresh token if 
 
 #### Retrieve specific user
 
-```http
+```
   GET /users/:id
 ```
 ```Authenticaction Header```: Bearer accessToken 
@@ -149,7 +149,7 @@ _Header is required! Access Token is given when after login or refresh token if 
 
 #### Create User
 
-```http
+```
   POST /users/:id              #:id -> User's ID | integer
 ```
 ```Authenticaction Header```: Bearer accessToken 
@@ -162,10 +162,10 @@ Insert single user
 ``` json
 {
     "user": {
-        "name": "User's name", # string
-        "email": "User's name", # string
-        "password": "User's name", # string
-        "role": "user", # string | optional | ONLY "user" or "admin"
+        "name": "User's name", // string
+        "email": "User's name", // string
+        "password": "User's name", // string
+        "role": "user", // string | optional | ONLY "user" or "admin"
     }
 }
 ```
@@ -175,16 +175,16 @@ Insert multiple user at once
 {
     "user": [
         {
-            "name": "1 User's name", # string
-            "email": "user1@mail.com", # string
-            "password": "user1pass", # string
-            "role": "user", # string | optional | ONLY "user" or "admin"
+            "name": "1 User's name", // string
+            "email": "user1@mail.com", // string
+            "password": "user1pass", // string
+            "role": "user", // string | optional | ONLY "user" or "admin"
         },
         {
-            "name": "2 User's name", # string
-            "email": "user2@mail.com", # string
-            "password": "user2pass", # string
-            "role": "user", # string | optional | ONLY "user" or "admin"
+            "name": "2 User's name", // string
+            "email": "user2@mail.com", // string
+            "password": "user2pass", // string
+            "role": "user", // string | optional | ONLY "user" or "admin"
         }
     ]
 }
@@ -192,7 +192,7 @@ Insert multiple user at once
 
 #### Update user
 
-```http
+```
   PUT /users/:id              #:id -> User's ID | integer
 ```
 
@@ -205,17 +205,17 @@ Body: ```Raw``` for postman
 ```json
 Note: every field is optional.
 {
-    "name": "User's name", # string
-    "email": "User's name", # string
-    "password": "User's name", # string
-    "role": "user", # string | ONLY "user" or "admin"
+    "name": "User's name", // string
+    "email": "User's name", // string
+    "password": "User's name", // string
+    "role": "user", // string | ONLY "user" or "admin"
 }
 ```
 
 
 #### Delete user
 
-```http
+```
   DELETE /users/:id              #:id -> User's ID | integer
 ```
 
